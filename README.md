@@ -1,60 +1,57 @@
-# API Documentation and Usage Guide
+# Documentación de la API y Guía de Uso (Plugin de WordPress)
 
-This document outlines how to extend the API with new endpoints and provides instructions on how to install and consume it from a React application.
+Este documento describe cómo extender la API con nuevos endpoints y proporciona instrucciones sobre cómo instalarla y usarla como un plugin de WordPress.
 
-## Adding New Endpoints
+## Agregando Nuevos Endpoints
 
-To add a new endpoint to the API, follow these steps:
+Para agregar un nuevo endpoint a la API, siga estos pasos:
 
-1.  **Define the Route:**  Determine the HTTP method (GET, POST, PUT, DELETE, etc.) and URL path for the new endpoint.  Choose a path that is logical and consistent with existing endpoints.
+1.  **Definir la Ruta:** Determine el método HTTP (GET, POST, PUT, DELETE, etc.) y la ruta URL para el nuevo endpoint. Elija una ruta que sea lógica y coherente con los endpoints existentes.
 
-2.  **Implement the Logic:**  Write the code to handle requests to the new endpoint. This typically involves:
-    *   Receiving and validating input data (if applicable).
-    *   Performing the necessary business logic (e.g., querying a database, processing data).
-    *   Returning a response in a suitable format (e.g., JSON).
+2.  **Implementar la Lógica:** Escriba el código para manejar las solicitudes al nuevo endpoint. Esto típicamente implica:
+    *   Recibir y validar los datos de entrada (si aplica).
+    *   Realizar la lógica de negocio necesaria (por ejemplo, consultar una base de datos, procesar datos).
+    *   Retornar una respuesta en un formato adecuado (por ejemplo, JSON).
 
-3.  **Error Handling:** Implement proper error handling to gracefully handle unexpected situations. Return appropriate HTTP status codes and informative error messages.
+3.  **Manejo de Errores:** Implemente un manejo de errores adecuado para manejar situaciones inesperadas con elegancia. Retorne códigos de estado HTTP apropiados y mensajes de error informativos.
 
-4.  **Documentation:**  Document the new endpoint in the API documentation (this README file). Include the following information:
-    *   Endpoint URL
-    *   HTTP method
-    *   Request parameters (if any)
-    *   Request body format (if applicable)
-    *   Response format
-    *   Example requests and responses
+4.  **Documentación:** Documente el nuevo endpoint en la documentación de la API (este archivo README). Incluya la siguiente información:
+    *   URL del endpoint
+    *   Método HTTP
+    *   Parámetros de solicitud (si los hay)
+    *   Formato del cuerpo de la solicitud (si aplica)
+    *   Formato de la respuesta
+    *   Ejemplos de solicitudes y respuestas
 
-5.  **Testing:**  Thoroughly test the new endpoint to ensure it functions correctly and handles edge cases.
+5.  **Pruebas:** Pruebe exhaustivamente el nuevo endpoint para asegurarse de que funciona correctamente y maneja los casos extremos.
 
-**Example (Conceptual)**
+**Ejemplo (Conceptual)**
 
-Let's say you want to add an endpoint to retrieve a specific user by ID:
+Digamos que quiere agregar un endpoint para recuperar un usuario específico por ID:
 
-*   **Route:** `GET /users/:id`
-*   **Logic:**
-    *   Extract the `id` from the URL.
-    *   Query the database for the user with that ID.
-    *   If the user exists, return the user data as JSON.
-    *   If the user does not exist, return a 404 Not Found error.
-*   **Documentation:**  Add an entry to the API documentation explaining the endpoint.
+*   **Ruta:** `GET /users/:id`
+*   **Lógica:**
+    *   Extraer el `id` de la URL.
+    *   Consultar la base de datos para el usuario con ese ID.
+    *   Si el usuario existe, retornar los datos del usuario como JSON.
+    *   Si el usuario no existe, retornar un error 404 Not Found.
+*   **Documentación:** Agregue una entrada a la documentación de la API explicando el endpoint.
 
-## Installation
+## Instalación (Plugin de WordPress)
 
-This assumes you have Node.js and npm (or yarn) installed.
+1.  **Descargue el Plugin:** Descargue el archivo ZIP del plugin.
+2.  **Instale el Plugin:** En el panel de administración de WordPress, vaya a "Plugins" -> "Añadir Nuevo" -> "Subir Plugin". Seleccione el archivo ZIP descargado y haga clic en "Instalar ahora".
+3.  **Active el Plugin:** Una vez instalado, haga clic en "Activar Plugin" para activar el plugin.
+4.  **Configuración:** Configure cualquier ajuste necesario del plugin en la página de configuración del plugin (si corresponde).
+5.  **Verificación:** Verifique que los endpoints de la API estén accesibles.
 
-1.  **Clone the Repository:** `git clone <repository_url>`
-2.  **Navigate to the Directory:** `cd <repository_directory>`
-3.  **Install Dependencies:** `npm install` or `yarn install`
-4.  **Configure Environment Variables:**  Set up any required environment variables (e.g., database connection string, API keys) in a `.env` file or through your system's environment settings.
-5.  **Start the Server:** `npm start` or `yarn start` (or the appropriate command defined in `package.json`).
+## Consumiendo la API desde una Aplicación React
 
-## Consuming the API from a React Application
+Esta sección explica cómo consumir la API desde una aplicación React usando `fetch` o una biblioteca como `axios`.
 
-This section explains how to consume the API from a React application using `fetch` or a library like `axios`.
+1.  **Instale un Cliente HTTP (Opcional):** `npm install axios` o `yarn add axios` (Si prefiere `fetch`, omita este paso).
 
-1.  **Install a HTTP Client (Optional):**  `npm install axios` or `yarn add axios` (If you prefer `fetch` skip this step).
-
-2.  **Example Component:**
-
+2.  **Componente de Ejemplo:**
 ```jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Or use fetch
@@ -68,9 +65,9 @@ function UserProfile({ userId }) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const result = await axios(`http://localhost:3000/users/${userId}`); // Replace with your API endpoint
+        const result = await axios(`/wp-json/mi-plugin/v1/users/${userId}`); // Replace with your API endpoint
         // Or use fetch:
-        // const response = await fetch(`http://localhost:3000/users/${userId}`);
+        // const response = await fetch(`/wp-json/mi-plugin/v1/users/${userId}`);
         // const result = await response.json();
 
         setUser(result.data); //Assuming the API returns {data: {user data}}
